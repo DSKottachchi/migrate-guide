@@ -1,4 +1,11 @@
-import { CornerDownLeft, MessageCircle, Mic, Paperclip, Speech, Star } from "lucide-react";
+import {
+  CornerDownLeft,
+  MessageCircle,
+  Mic,
+  Paperclip,
+  Speech,
+  Star,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -126,17 +133,14 @@ export default function Feed() {
                   </div>
                 ) : null}
 
-                <hr className="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" />
-
-                <div className="flex gap-2">
-                <Button className="text-xs h-8" variant="outline">
-                  <Star className="mr-2 h-4 w-4" /> Star (138)
-                </Button>
-                <Button className="text-xs h-8" variant="outline">
-                  <MessageCircle className="mr-2 h-4 w-4" /> Comments (36)
-                </Button>
+                <div className="flex gap-2 mt-2">
+                  <Button className="text-xs h-8" variant="outline">
+                    <Star className="mr-2 h-4 w-4" /> Star (138)
+                  </Button>
+                  <Button className="text-xs h-8" variant="outline">
+                    <MessageCircle className="mr-2 h-4 w-4" /> Comments (36)
+                  </Button>
                 </div>
-                
               </button>
             ))}
           </div>
