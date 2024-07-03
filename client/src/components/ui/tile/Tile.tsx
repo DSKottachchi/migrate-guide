@@ -1,5 +1,4 @@
 import { Menu, Eye } from "lucide-react"
-import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -27,7 +26,7 @@ const Tile = ({ className, ...props }: CardProps) => {
           {/* <BellRing /> */}
           <div className="flex-1">
             <p className="text-sm font-medium">
-              Push Notifications
+              Sri Lankan's in Sweden
             </p>
             <p className="text-sm">
               Send notifications to device.
