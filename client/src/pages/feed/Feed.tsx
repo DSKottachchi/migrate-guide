@@ -3,24 +3,23 @@ import {
   MessageCircle,
   Mic,
   Paperclip,
-  Speech,
   Star,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "../../components/ui/button";
+import { Label } from "../../components/ui/label";
+import { Textarea } from "../../components/ui/textarea";
+
+import { Card } from "../../components/ui/card";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+} from "../../components/ui/tooltip";
+import { Badge } from "../../components/ui/badge";
+import { cn } from "../../lib/utils";
 import { Input } from "../../components/ui/input";
 import { useState } from "react";
-import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar";
 
 export default function Feed() {
   const [title, setTitle] = useState("");

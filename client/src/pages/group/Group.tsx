@@ -19,7 +19,7 @@ const tiles = [
 const Group = () => {
   return (
     <div className="flex gap-10">
-      {tiles.map((tile) => (
+      {tiles.map(() => (
         <Tile />
       ))}
     </div>

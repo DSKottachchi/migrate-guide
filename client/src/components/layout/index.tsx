@@ -14,7 +14,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "../../components/ui/dropdown-menu";
 import "./index.css";
 import { Link, Outlet } from "react-router-dom";
 import { Input } from "../ui/input";
@@ -84,7 +84,7 @@ const Layout = () => {
             </div>
           </form>
 
-          <DropdownMenu className="ml-auto">
+          <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
                 <CircleUser className="h-5 w-5" />
