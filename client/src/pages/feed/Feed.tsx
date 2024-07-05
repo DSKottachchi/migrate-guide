@@ -18,30 +18,67 @@ import {
 import { Badge } from "../../components/ui/badge";
 import { cn } from "../../lib/utils";
 import { Input } from "../../components/ui/input";
-import { useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar";
+import { useState, useEffect } from "react";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../components/ui/avatar";
 
 export default function Feed() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [items, setItems] = useState<any>([]);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:9090/posts", {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setItems(data);
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (e: any) => {
     e.preventDefault();
     const item = {
-      id: "001",
-      name: title,
-      email: "williamsmith@example.com",
-      subject: "Meeting Tomorrow",
-      text: description,
-      date: "2023-10-22T09:00:00",
-      read: true,
-      labels: ["meeting", "work", "important"],
+      title: title,
+      description: description,
     };
 
     console.log(item);
 
-    items.push(item);
+    // items.push(item);
+    // fetch("http://localhost:9090/posts", {
+    //   method: "POST",
+    //   body: {
+    //     title: "title",
+    //     description: "description",
+    //   }
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     // setJoke(data[0].joke);
+    //     setItems(data);
+    //     console.log(data);
+    //   })
+    //   .catch((error) => console.log(error));
+
+    fetch(`http://localhost:9090/posts`, 
+      {
+        method: "POST",
+        body: JSON.stringify({ title: title, description: description }),
+        headers: {
+          Accept: "application/json, text/plain",
+          "Content-Type": "application/json;charset=UTF-8"
+        }
+      }).then((response) => response.json());
   };
 
   return (
@@ -96,7 +133,8 @@ export default function Feed() {
 
         <div className="h-screen mt-12">
           <div className="flex flex-col gap-2 pr-4 pt-0">
-            {items.map((item) => (
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            {items.map((item: any) => (
               <button
                 // key={item.id}
                 className={cn(
@@ -106,8 +144,8 @@ export default function Feed() {
                 <div className="flex w-full flex-col gap-1">
                   <div className="flex items-center">
                     <div className="flex items-center gap-2">
-                      <div className="font-semibold">{item.name}</div>
-                      {!item.read && (
+                      <div className="font-semibold">{item.title}</div>
+                      {!item.title && (
                         <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                       )}
                     </div>
@@ -120,17 +158,17 @@ export default function Feed() {
                   {/* <div className="text-xs font-medium">{item.subject}</div> */}
                 </div>
                 <div className="line-clamp-2 text-xs text-muted-foreground">
-                  {item.text.substring(0, 300)}
+                  {item.description.substring(0, 300)}
                 </div>
                 <img src="https://placehold.co/1000x200" alt="Logo" />
 
-                {item.labels.length ? (
+                {/* {item.labels.length ? (
                   <div className="flex items-center gap-2 mt-4">
                     {item.labels.map((label) => (
                       <Badge key={label}>work</Badge>
                     ))}
                   </div>
-                ) : null}
+                ) : null} */}
 
                 <div className="flex gap-2 mt-2">
                   <Button className="text-xs h-8" variant="outline">
@@ -250,15 +288,15 @@ export default function Feed() {
             <div className="flex-1">
               <p className="text-sm font-medium">Discover</p>
               <div>
-                {items.map((item) => (
+                {items.map(() => (
                   <div>
-                    {item.labels.length ? (
-                      <div className="flex gap-2 mt-4">
-                        {item.labels.map((label) => (
-                          <Badge key={label}>work</Badge>
-                        ))}
-                      </div>
-                    ) : null}
+                    {/* {item.labels.length ? ( */}
+                    <div className="flex gap-2 mt-4">
+                      {/* {item.labels.map((label) => ( */}
+                      <Badge>work</Badge>
+                      {/* ))} */}
+                    </div>
+                    {/* ) : null} */}
                   </div>
                 ))}
               </div>
@@ -270,65 +308,65 @@ export default function Feed() {
   );
 }
 
-export const items = [
-  {
-    id: "6c84fb90-12c4-11e1-840d-7b25c5ee775a",
-    name: "How to find apartments in Sweden?",
-    email: "williamsmith@example.com",
-    subject: "Meeting Tomorrow",
-    text: "Hi everyone I am going to study in Helsingborg and i am looking for two room apartment in Helsingborg for one year with furniture. Thank your for message.",
-    date: "2023-10-22T09:00:00",
-    read: true,
-    labels: ["meeting", "work", "important"],
-  },
-  {
-    id: "110e8400-e29b-11d4-a716-446655440000",
-    name: "Residency permit for doctoral studies in Sweden",
-    email: "alicesmith@example.com",
-    subject: "Re: Project Update",
-    text: "Hello there, I am yet to apply for Resi­dence permit for doctoral studies, I am confused about what comprehensive health insurance policy is. Is it same as the travel insurance that available in India? if so can someone please suggest me a good insurance company?",
-    date: "2023-10-22T10:30:00",
-    read: true,
-    labels: ["work", "important"],
-  },
-  {
-    id: "110e8400-e29b-11d4-a716-446655440000",
-    name: "Student loans in Sweden",
-    email: "alicesmith@example.com",
-    subject: "Re: Project Update",
-    text: "Hello, I'm Remy from Nigeria. I just got admitted to Mid Sweden University for my graduate studies. Please I need information on funding organisations that give out student loans or support international students coming to Sweden.",
-    date: "2023-10-22T10:30:00",
-    read: true,
-    labels: ["work", "important"],
-  },
-  {
-    id: "6c84fb90-12c4-11e1-840d-7b25c5ee775a",
-    name: "How to find apartments in Sweden?",
-    email: "williamsmith@example.com",
-    subject: "Meeting Tomorrow",
-    text: "Hi everyone I am going to study in Helsingborg and i am looking for two room apartment in Helsingborg for one year with furniture. Thank your for message.",
-    date: "2023-10-22T09:00:00",
-    read: true,
-    labels: ["meeting", "work", "important"],
-  },
-  {
-    id: "110e8400-e29b-11d4-a716-446655440000",
-    name: "Residency permit for doctoral studies in Sweden",
-    email: "alicesmith@example.com",
-    subject: "Re: Project Update",
-    text: "Hello there, I am yet to apply for Resi­dence permit for doctoral studies, I am confused about what comprehensive health insurance policy is. Is it same as the travel insurance that available in India? if so can someone please suggest me a good insurance company?",
-    date: "2023-10-22T10:30:00",
-    read: true,
-    labels: ["work", "important"],
-  },
-  {
-    id: "110e8400-e29b-11d4-a716-446655440000",
-    name: "Student loans in Sweden",
-    email: "alicesmith@example.com",
-    subject: "Re: Project Update",
-    text: "Hello, I'm Remy from Nigeria. I just got admitted to Mid Sweden University for my graduate studies. Please I need information on funding organisations that give out student loans or support international students coming to Sweden.",
-    date: "2023-10-22T10:30:00",
-    read: true,
-    labels: ["work", "important"],
-  },
-];
+// export const items = [
+//   {
+//     id: "6c84fb90-12c4-11e1-840d-7b25c5ee775a",
+//     name: "How to find apartments in Sweden?",
+//     email: "williamsmith@example.com",
+//     subject: "Meeting Tomorrow",
+//     text: "Hi everyone I am going to study in Helsingborg and i am looking for two room apartment in Helsingborg for one year with furniture. Thank your for message.",
+//     date: "2023-10-22T09:00:00",
+//     read: true,
+//     labels: ["meeting", "work", "important"],
+//   },
+//   {
+//     id: "110e8400-e29b-11d4-a716-446655440000",
+//     name: "Residency permit for doctoral studies in Sweden",
+//     email: "alicesmith@example.com",
+//     subject: "Re: Project Update",
+//     text: "Hello there, I am yet to apply for Resi­dence permit for doctoral studies, I am confused about what comprehensive health insurance policy is. Is it same as the travel insurance that available in India? if so can someone please suggest me a good insurance company?",
+//     date: "2023-10-22T10:30:00",
+//     read: true,
+//     labels: ["work", "important"],
+//   },
+//   {
+//     id: "110e8400-e29b-11d4-a716-446655440000",
+//     name: "Student loans in Sweden",
+//     email: "alicesmith@example.com",
+//     subject: "Re: Project Update",
+//     text: "Hello, I'm Remy from Nigeria. I just got admitted to Mid Sweden University for my graduate studies. Please I need information on funding organisations that give out student loans or support international students coming to Sweden.",
+//     date: "2023-10-22T10:30:00",
+//     read: true,
+//     labels: ["work", "important"],
+//   },
+//   {
+//     id: "6c84fb90-12c4-11e1-840d-7b25c5ee775a",
+//     name: "How to find apartments in Sweden?",
+//     email: "williamsmith@example.com",
+//     subject: "Meeting Tomorrow",
+//     text: "Hi everyone I am going to study in Helsingborg and i am looking for two room apartment in Helsingborg for one year with furniture. Thank your for message.",
+//     date: "2023-10-22T09:00:00",
+//     read: true,
+//     labels: ["meeting", "work", "important"],
+//   },
+//   {
+//     id: "110e8400-e29b-11d4-a716-446655440000",
+//     name: "Residency permit for doctoral studies in Sweden",
+//     email: "alicesmith@example.com",
+//     subject: "Re: Project Update",
+//     text: "Hello there, I am yet to apply for Resi­dence permit for doctoral studies, I am confused about what comprehensive health insurance policy is. Is it same as the travel insurance that available in India? if so can someone please suggest me a good insurance company?",
+//     date: "2023-10-22T10:30:00",
+//     read: true,
+//     labels: ["work", "important"],
+//   },
+//   {
+//     id: "110e8400-e29b-11d4-a716-446655440000",
+//     name: "Student loans in Sweden",
+//     email: "alicesmith@example.com",
+//     subject: "Re: Project Update",
+//     text: "Hello, I'm Remy from Nigeria. I just got admitted to Mid Sweden University for my graduate studies. Please I need information on funding organisations that give out student loans or support international students coming to Sweden.",
+//     date: "2023-10-22T10:30:00",
+//     read: true,
+//     labels: ["work", "important"],
+//   },
+// ];
