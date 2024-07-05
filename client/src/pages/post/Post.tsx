@@ -1,6 +1,8 @@
 import { Textarea } from "../../components/ui/textarea";
 import { Button } from "../../components/ui/button";
 import { CircleChevronDown, CircleChevronUp } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Post() {
   return (
@@ -12,7 +14,7 @@ export default function Post() {
       <div className="text-sm/[17px]">{item.text}</div>
       <div className="font-semibold mt-12">2 Answers</div>
 
-      <div className="flex mt-4">
+      <Card className="flex mt-4 bg-white p-4">
         <div className="text-center">
           <Button variant="outline" size="icon">
             <CircleChevronUp className="h-4 w-4" />
@@ -22,15 +24,35 @@ export default function Post() {
             <CircleChevronDown className="h-4 w-4" />
           </Button>
         </div>
+        
         <div className="leading-6 ml-4 text-sm/[17px]">
+          <div>
+          <div className="flex items-center gap-4 mb-4">
+                  <Avatar className="hidden h-9 w-9 sm:flex">
+                    <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                    <AvatarFallback>OM</AvatarFallback>
+                  </Avatar>
+                  <div className="grid gap-1">
+                    <p className="text-sm font-medium leading-none">
+                      Olivia Martin
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      olivia.martin@email.com
+                    </p>
+                  </div>
+                  {/* <Button className="ml-auto" variant="secondary">
+                    Secondary
+                  </Button> */}
+                </div>
+          </div>
           {item.subText}
         </div>
-      </div>
+      </Card>
 
-      <hr className="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" />
+      {/* <hr className="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" /> */}
 
-      <div className="flex mt-4">
-        <div className="flex flex-col	text-center">
+      <Card className="flex mt-4 bg-white p-4">
+        <div className="text-center">
           <Button variant="outline" size="icon">
             <CircleChevronUp className="h-4 w-4" />
           </Button>
@@ -39,12 +61,31 @@ export default function Post() {
             <CircleChevronDown className="h-4 w-4" />
           </Button>
         </div>
+        
         <div className="leading-6 ml-4 text-sm/[17px]">
+          <div>
+          <div className="flex items-center gap-4 mb-4">
+                  <Avatar className="hidden h-9 w-9 sm:flex">
+                    <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                    <AvatarFallback>OM</AvatarFallback>
+                  </Avatar>
+                  <div className="grid gap-1">
+                    <p className="text-sm font-medium leading-none">
+                      Olivia Martin
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      olivia.martin@email.com
+                    </p>
+                  </div>
+                  {/* <Button className="ml-auto" variant="secondary">
+                    Secondary
+                  </Button> */}
+                </div>
+          </div>
           {item.subText}
         </div>
-      </div>
+      </Card>
 
-      <hr className="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" />
       <div className="font-semibold mt-12 mb-4">Your Answer</div>
 
       <Textarea

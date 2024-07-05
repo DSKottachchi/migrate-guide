@@ -23,7 +23,7 @@ import { Button } from "../ui/button";
 const Layout = () => {
   return (
     <div className="layout">
-      <div className="sidebar border-r ">
+      <div className="sidebar border-r">
         <div className="flex h-14 items-center border-b p-4 lg:h-[60px] lg:px-6">
           <Link className="flex items-center gap-2 font-semibold" to={"/feed"}>
             <Package2 className="h-6 w-6" />
