@@ -1,3 +1,5 @@
+import User from '../models/user.js'
+
 // @desc    Auth user/set token
 // route    POST /api/users/auth
 // access Public
@@ -17,6 +19,7 @@ const authUser = async (req, res) => {
 // access Public
 const registerUser = async (req, res) => {
     try {
+        console.log(req.body);
         res.status(200).json({
             message: "Registered User",
           });

@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 
-const Schema = mongoose.Schema;
-
-const postSchema = new Schema({
+const postSchema = mongoose.Schema({
   title: {
     type: String,
     required: [true, "Please enter a post title"]
