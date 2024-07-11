@@ -2,11 +2,8 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-const postSchema = new Schema({
-  title: {
-    type: String,
-    required: [true, "Please enter a post title"]
-  },
+const commentSchema = new Schema({
+  // Linked posts
   description: {
     type: String,
     required: [true, "Please enter a post description"]
@@ -17,6 +14,6 @@ const postSchema = new Schema({
 });
 
 
-const Post = mongoose.model('Post', postSchema);
+const Comment = mongoose.model('Comment', commentSchema);
 
-export default Post;
+export default Comment;
