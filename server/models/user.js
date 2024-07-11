@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
 const userSchema = mongoose.Schema({
   name: {
@@ -10,7 +11,7 @@ const userSchema = mongoose.Schema({
     required: [true, "Please enter a email"],
     unique: true
   },
-  email: {
+  password: {
     type: String,
     required: [true, "Please enter a password"],
   },
