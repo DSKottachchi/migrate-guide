@@ -1,13 +1,25 @@
-import React from 'react'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
+import React from "react";
+import { store } from "../src/slices/index.ts";
+import { Provider } from "react-redux";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ReactDOM from "react-dom/client";
+import App from "./App.tsx";
 import Group from "./pages/group/Group";
 import Feed from "./pages/feed/Feed";
 import Post from "./pages/post/Post";
-import './index.css'
-import { TooltipProvider } from './components/ui/tooltip.tsx';
-import Layout from './components/layout/index.tsx';
+import { Login } from "./pages/login/Login.tsx";
+import "./index.css";
+import { TooltipProvider } from "./components/ui/tooltip.tsx";
+import Layout from "./components/layout/index.tsx";
+import { Register } from "./pages/register/Register.tsx";
+import { ClerkProvider } from "@clerk/clerk-react";
+
+// Import your publishable key
+const PUBLISHABLE_KEY = "";
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Missing Publishable Key");
+}
 
 const router = createBrowserRouter([
   {
@@ -30,15 +42,26 @@ const router = createBrowserRouter([
         path: "post",
         element: <Post />,
       },
-    ]
+    ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
 ]);
 
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <TooltipProvider>
-      <RouterProvider router={router}/>    
-    </TooltipProvider>
-  </React.StrictMode>,
-)
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+      <Provider store={store}>
+        <TooltipProvider>
+          <RouterProvider router={router} />
+        </TooltipProvider>
+      </Provider>
+    </ClerkProvider>
+  </React.StrictMode>
+);
