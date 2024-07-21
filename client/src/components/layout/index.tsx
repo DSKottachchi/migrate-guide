@@ -71,7 +71,7 @@ const Layout = () => {
           </div>
 
           <div className="ml-2 content">
-            <div className="h-16 px-6 p-2 justify-between flex w-full sticky top-0 bg-white">
+            <div className="h-16 z-10 px-6 p-2 justify-between flex w-full sticky top-0 bg-white">
               <form>
                 <div className="relative">
                   <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />

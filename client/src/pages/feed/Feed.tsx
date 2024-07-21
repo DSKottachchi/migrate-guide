@@ -31,10 +31,12 @@ export default function Feed() {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:9090/posts", {
+    fetch("http://localhost:9090/api/posts", {
       method: "GET",
+      credentials: "include",
     })
       .then((response) => response.json())
       .then((data) => {
@@ -42,51 +44,43 @@ export default function Feed() {
         console.log(data);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [title]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    console.log(file);
+    const data = new FormData();
+
+
     const item = {
       title: title,
       description: description,
     };
 
+    if(file) {
+      data.append("title", title);
+      data.append("description", description);
+      data.append("image", file[0]);
+    }
+
     console.log(item);
 
-    // items.push(item);
-    // fetch("http://localhost:9090/posts", {
-    //   method: "POST",
-    //   body: {
-    //     title: "title",
-    //     description: "description",
-    //   }
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     // setJoke(data[0].joke);
-    //     setItems(data);
-    //     console.log(data);
-    //   })
-    //   .catch((error) => console.log(error));
-
-    fetch(`http://localhost:9090/posts`, 
-      {
-        method: "POST",
-        body: JSON.stringify({ title: title, description: description }),
-        headers: {
-          Accept: "application/json, text/plain",
-          "Content-Type": "application/json;charset=UTF-8"
-        }
-      }).then((response) => response.json());
+    fetch(`http://localhost:9090/api/posts`, {
+      method: "POST",
+      body: data,
+      headers: {
+        // 'Content-Type': 'multipart/form-data'
+      },
+    }).then((response) => response.json());
   };
 
   return (
     <div className="flex">
-      <div>
+      <div className="w-full">
         <form
           onSubmit={handleSubmit}
-          className="relative overflow-hidden rounded-lg border bg-background p-2 mr-4 focus-within:ring-1 focus-within:ring-ring"
+          className=" overflow-hidden rounded-lg border bg-background p-2 mr-4 focus-within:ring-1 focus-within:ring-ring"
         >
           <Label htmlFor="message" className="sr-only">
             Message
@@ -106,24 +100,22 @@ export default function Feed() {
           />
 
           <div className="flex items-center p-3 pt-0  mt-2">
-            <Tooltip>
+            {/* <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Paperclip className="size-4" />
-                  <span className="sr-only">Attach file</span>
-                </Button>
-              </TooltipTrigger>
+              */}
+
+            <input
+              type="file"
+              accept=".jpeg, .png, .jpg"
+              onChange={(e: any) => setFile(e.target.files)}
+              className="text-sm text-stone-500 file:mr-5 file:py-1 file:px-3 file:border-[1px] file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
+              hover:file:cursor-pointer hover:file:bg-blue-50 hover:file:text-blue-700"
+            />
+
+            {/* </TooltipTrigger>
               <TooltipContent side="top">Attach File</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Mic className="size-4" />
-                  <span className="sr-only">Use Microphone</span>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="top">Use Microphone</TooltipContent>
-            </Tooltip>
+            </Tooltip> */}
+
             <Button type="submit" size="sm" className="ml-auto gap-1.5">
               New Post
               <CornerDownLeft className="size-3.5" />
@@ -131,36 +123,60 @@ export default function Feed() {
           </div>
         </form>
 
-        <div className="h-screen mt-12">
+        <div className="w-full h-screen mt-12">
           <div className="flex flex-col gap-2 pr-4 pt-0">
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             {items.map((item: any) => (
               <button
                 // key={item.id}
                 className={cn(
-                  "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all bg-white hover:bg-accent"
+                  "flex flex-col items-start gap-2 rounded-lg border px-8 py-8 text-left text-sm transition-all bg-white hover:bg-accent"
                 )}
               >
                 <div className="flex w-full flex-col gap-1">
-                  <div className="flex items-center">
-                    <div className="flex items-center gap-2">
-                      <div className="font-semibold">{item.title}</div>
-                      {!item.title && (
-                        <span className="flex h-2 w-2 rounded-full bg-blue-600" />
-                      )}
-                    </div>
-                    <div
+
+                <div className="flex items-center gap-4">
+                  <Avatar className="hidden h-9 w-9 sm:flex">
+                    <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                    <AvatarFallback>OM</AvatarFallback>
+                  </Avatar>
+                  <div className="grid gap-1">
+                    <p className="text-sm font-medium leading-none">
+                      Olivia Martin
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      olivia.martin@email.com
+                    </p>
+                  </div>
+                  <div
                       className={cn("ml-auto text-xs text-muted-foreground")}
                     >
                       over a year ago
                     </div>
+                </div>
+
+
+
+
+
+                  <div className="flex items-center mt-5">
+                    {/* <div className="flex items-center gap-2">
+                      <div className=" text-lg font-semibold">{item.title}</div>
+                      {!item.title && (
+                        <span className="flex h-2 w-2 rounded-full bg-blue-600" />
+                      )}
+                    </div> */}
+
+
+
+                    
                   </div>
                   {/* <div className="text-xs font-medium">{item.subject}</div> */}
                 </div>
-                <div className="line-clamp-2 text-xs text-muted-foreground">
+                <div className="line-clamp-2 mb-4 text-sm text-muted-foreground">
                   {item.description.substring(0, 300)}
                 </div>
-                <img src="https://placehold.co/1000x200" alt="Logo" />
+                <img className="rounded-lg" src={item.image} alt="Logo" />
+                {/* <img src={URL.createObjectURL(item.image)} /> */}
 
                 {/* {item.labels.length ? (
                   <div className="flex items-center gap-2 mt-4">
@@ -184,7 +200,7 @@ export default function Feed() {
         </div>
       </div>
 
-      <div className="w-3/4">
+      <div className="ml-auto">
         <Card>
           <div className="flex items-center p-4">
             {/* <BellRing /> */}
