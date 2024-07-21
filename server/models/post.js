@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const postSchema = mongoose.Schema({
+  author: {
+    type: String,
+    required: [true, "Please enter a author name"]
+  },
   title: {
     type: String,
     required: [true, "Please enter a post title"]
@@ -8,6 +12,10 @@ const postSchema = mongoose.Schema({
   description: {
     type: String,
     required: [true, "Please enter a post description"]
+  },
+  image: {
+    type: String,
+    required: false  
   }
 },
 {

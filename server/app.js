@@ -9,19 +9,29 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import connectDb from './config/db.js';
 
 dotenv.config();
+
+import cookieParser from 'cookie-parser';
+
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 9090;
 
 connectDb()
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(cookieParser());
+
 app.use(cors({
   origin: 'http://localhost:5000',
+  credentials: true
 }));
 
-app.use('api/users', userRoutes);
-app.use('api/posts', postRoutes);
+// TODO: DECODE JWT TOKEN
+
+app.use('/api/users', userRoutes);
+
+// Add middleware
+app.use('/api/posts', postRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
