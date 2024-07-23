@@ -51,7 +51,7 @@ jobs:
 
   build-server:
     runs-on: self-hosted
-    name: Build Client
+    name: Build Server
     strategy:
       matrix:
         node-version: [18.x]
