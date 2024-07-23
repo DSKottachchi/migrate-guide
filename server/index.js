@@ -6,11 +6,10 @@ import userRoutes from './routes/userRoutes.js';
 import postRoutes from './routes/postRoutes.js';
 
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+import cookieParser from 'cookie-parser';
 import connectDb from './config/db.js';
 
 dotenv.config();
-
-import cookieParser from 'cookie-parser';
 
 const app = express();
 const port = process.env.PORT || 9090;

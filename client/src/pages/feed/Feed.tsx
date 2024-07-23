@@ -4,6 +4,7 @@ import {
   Mic,
   Paperclip,
   Star,
+  EllipsisVertical,
 } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { Label } from "../../components/ui/label";
@@ -44,7 +45,7 @@ export default function Feed() {
         console.log(data);
       })
       .catch((error) => console.log(error));
-  }, [title]);
+  }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (e: any) => {
@@ -52,13 +53,12 @@ export default function Feed() {
     console.log(file);
     const data = new FormData();
 
-
     const item = {
       title: title,
       description: description,
     };
 
-    if(file) {
+    if (file) {
       data.append("title", title);
       data.append("description", description);
       data.append("image", file[0]);
@@ -72,12 +72,22 @@ export default function Feed() {
       headers: {
         // 'Content-Type': 'multipart/form-data'
       },
-    }).then((response) => response.json());
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+
+        setItems([...items, data]);
+        setTitle("");
+        setDescription("");
+        setFile(null);
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
     <div className="flex">
-      <div className="w-full">
+      <div className="w-3/5">
         <form
           onSubmit={handleSubmit}
           className=" overflow-hidden rounded-lg border bg-background p-2 mr-4 focus-within:ring-1 focus-within:ring-ring"
@@ -126,37 +136,39 @@ export default function Feed() {
         <div className="w-full h-screen mt-12">
           <div className="flex flex-col gap-2 pr-4 pt-0">
             {items.map((item: any) => (
-              <button
+              <div
                 // key={item.id}
                 className={cn(
-                  "flex flex-col items-start gap-2 rounded-lg border px-8 py-8 text-left text-sm transition-all bg-white hover:bg-accent"
+                  "flex flex-col items-start gap-2 rounded-lg border px-8 py-8 text-left text-sm transition-all bg-white "
                 )}
               >
                 <div className="flex w-full flex-col gap-1">
-
-                <div className="flex items-center gap-4">
-                  <Avatar className="hidden h-9 w-9 sm:flex">
-                    <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                    <AvatarFallback>OM</AvatarFallback>
-                  </Avatar>
-                  <div className="grid gap-1">
-                    <p className="text-sm font-medium leading-none">
-                      Olivia Martin
-                    </p>
-                    <p className="text-sm text-muted-foreground">
+                  <div className="flex items-center gap-4">
+                    <Avatar className="hidden h-9 w-9 sm:flex">
+                      <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                      <AvatarFallback>OM</AvatarFallback>
+                    </Avatar>
+                    <div className="grid gap-1">
+                      <p className="text-sm font-medium leading-none">
+                        Olivia Martin
+                      </p>
+                      {/* <p className="text-sm text-muted-foreground">
                       olivia.martin@email.com
-                    </p>
-                  </div>
-                  <div
+                    </p> */}
+
+                      <div
+                        className={cn("text-xs mb-auto text-muted-foreground")}
+                      >
+                        over a year ago
+                      </div>
+                    </div>
+
+                    <button
                       className={cn("ml-auto text-xs text-muted-foreground")}
                     >
-                      over a year ago
-                    </div>
-                </div>
-
-
-
-
+                      <EllipsisVertical className="mr-2 h-4 w-4" />
+                    </button>
+                  </div>
 
                   <div className="flex items-center mt-5">
                     {/* <div className="flex items-center gap-2">
@@ -165,10 +177,6 @@ export default function Feed() {
                         <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                       )}
                     </div> */}
-
-
-
-                    
                   </div>
                   {/* <div className="text-xs font-medium">{item.subject}</div> */}
                 </div>
@@ -194,13 +202,13 @@ export default function Feed() {
                     <MessageCircle className="mr-2 h-4 w-4" /> Comments (36)
                   </Button>
                 </div>
-              </button>
+              </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="ml-auto">
+      <div className="w-2/5 ml-auto">
         <Card>
           <div className="flex items-center p-4">
             {/* <BellRing /> */}
@@ -214,11 +222,11 @@ export default function Feed() {
                     <AvatarImage src="/avatars/01.png" alt="Avatar" />
                     <AvatarFallback>OM</AvatarFallback>
                   </Avatar>
-                  <div className="grid gap-1">
+                  <div className="grid gap-1 ">
                     <p className="text-sm font-medium leading-none">
                       Olivia Martin
                     </p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       olivia.martin@email.com
                     </p>
                   </div>
@@ -235,7 +243,7 @@ export default function Feed() {
                     <p className="text-sm font-medium leading-none">
                       Jackson Lee
                     </p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       jackson.lee@email.com
                     </p>
                   </div>
@@ -252,7 +260,7 @@ export default function Feed() {
                     <p className="text-sm font-medium leading-none">
                       Isabella Nguyen
                     </p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       isabella.nguyen@email.com
                     </p>
                   </div>
@@ -269,7 +277,7 @@ export default function Feed() {
                     <p className="text-sm font-medium leading-none">
                       William Kim
                     </p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       will@email.com
                     </p>
                   </div>
@@ -286,7 +294,7 @@ export default function Feed() {
                     <p className="text-sm font-medium leading-none">
                       Sofia Davis
                     </p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       sofia.davis@email.com
                     </p>
                   </div>
@@ -298,27 +306,22 @@ export default function Feed() {
             </div>
           </div>
         </Card>
-        <Card className="mt-10">
+        {/* <Card className="mt-10">
           <div className="flex items-center p-4">
-            {/* <BellRing /> */}
             <div className="flex-1">
               <p className="text-sm font-medium">Discover</p>
               <div>
                 {items.map(() => (
                   <div>
-                    {/* {item.labels.length ? ( */}
                     <div className="flex gap-2 mt-4">
-                      {/* {item.labels.map((label) => ( */}
                       <Badge>work</Badge>
-                      {/* ))} */}
                     </div>
-                    {/* ) : null} */}
                   </div>
                 ))}
               </div>
             </div>
           </div>
-        </Card>
+        </Card> */}
       </div>
     </div>
   );
