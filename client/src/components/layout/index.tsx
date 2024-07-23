@@ -1,5 +1,4 @@
 import {
-  CircleUser,
   Home,
   LineChart,
   Package,
@@ -7,18 +6,9 @@ import {
   Search,
   ShoppingCart,
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../../components/ui/dropdown-menu";
 import "./index.css";
 import { Link, Outlet } from "react-router-dom";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
 import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 import { Login } from "@/pages/login/Login";
 

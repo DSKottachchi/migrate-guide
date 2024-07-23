@@ -1,20 +1,6 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  SignedIn,
   SignedOut,
-  SignIn,
-  SignInButton,
-  UserButton,
+  SignIn
 } from "@clerk/clerk-react";
 
 export function Login() {

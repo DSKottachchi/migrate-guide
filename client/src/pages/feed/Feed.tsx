@@ -1,8 +1,6 @@
 import {
   CornerDownLeft,
   MessageCircle,
-  Mic,
-  Paperclip,
   Star,
   EllipsisVertical,
 } from "lucide-react";
@@ -11,12 +9,6 @@ import { Label } from "../../components/ui/label";
 import { Textarea } from "../../components/ui/textarea";
 
 import { Card } from "../../components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "../../components/ui/tooltip";
-import { Badge } from "../../components/ui/badge";
 import { cn } from "../../lib/utils";
 import { Input } from "../../components/ui/input";
 import { useState, useEffect } from "react";
