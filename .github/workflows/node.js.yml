@@ -9,6 +9,18 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# Set environment variables
+env:
+  NODE_ENV: ${{ secrets.NODE_ENV }}
+  PORT: ${{ secrets.PORT }}
+  MONGO_URI: ${{ secrets.MONGO_URI }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+  BUCKET_REGION: ${{ secrets.BUCKET_REGION }}
+  ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
+  SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+  VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+
 jobs:
   build-client:
     runs-on: self-hosted
@@ -25,10 +37,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        
     - name: Install client dependencies
       run: |
         cd client
         npm install
+        export VITE_CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLISHABLE_KEY
     - name: Build client
       run: |
         cd client
@@ -53,6 +67,15 @@ jobs:
     - name: Install server dependencies
       run: |
         npm install
+        export NODE_ENV=$NODE_ENV
+        export PORT=$PORT
+        export MONGO_URI=$MONGO_URI
+        export JWT_SECRET=$JWT_SECRET
+        export BUCKET_NAME=$BUCKET_NAME
+        export BUCKET_REGION=$BUCKET_REGION
+        export ACCESS_KEY=$ACCESS_KEY
+        export SECRET_ACCESS_KEY=$SECRET_ACCESS_KEY
+
     - name: Build server
       run: |
         npm run serve
