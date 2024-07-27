@@ -6,8 +6,6 @@ name: Node.js CI
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 # Set environment variables
 env:
@@ -79,3 +77,7 @@ jobs:
     - name: Build server
       run: |
         npm run serve
+
+    - name: Restart server
+      run: |
+        sudo pm2 restart backend
