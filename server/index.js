@@ -12,7 +12,7 @@ import connectDb from './config/db.js';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 9090;
+const port = process.env.PORT || 3000;
 
 connectDb()
 app.use(express.json());
@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(cors({
-  origin: 'http://localhost:5000',
+  origin: 'http://localhost:3000',
   credentials: true
 }));
 
