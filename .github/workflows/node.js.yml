@@ -74,9 +74,12 @@ jobs:
         export ACCESS_KEY=$ACCESS_KEY
         export SECRET_ACCESS_KEY=$SECRET_ACCESS_KEY
 
-    - name: Build server
+    - name: Run server
       run: |
-        npm run build
+        npm run serve
+
+    - name: Stop server
+      run: kill $(cat server.pid)
 
     - name: Restart server
       run: |
