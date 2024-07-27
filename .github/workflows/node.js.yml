@@ -75,12 +75,10 @@ jobs:
         export SECRET_ACCESS_KEY=$SECRET_ACCESS_KEY
 
     - name: Run server
-      run: |
-        npm run serve
+      run: npm run serve
 
     - name: Stop server
       run: kill $(cat server.pid)
 
     - name: Restart server
-      run: |
-        sudo pm2 restart backend
+      run: sudo pm2 restart backend
