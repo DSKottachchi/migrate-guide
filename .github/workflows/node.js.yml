@@ -76,7 +76,7 @@ jobs:
 
     - name: Build server
       run: |
-        npm run serve
+        npm run build
 
     - name: Restart server
       run: |
