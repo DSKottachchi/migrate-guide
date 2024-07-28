@@ -75,7 +75,7 @@ jobs:
         export SECRET_ACCESS_KEY=$SECRET_ACCESS_KEY
 
     - name: Run server
-      run: npm run serve
+      run: npm run build --if-present
 
     - name: Stop server
       run: kill $(cat server.pid)
