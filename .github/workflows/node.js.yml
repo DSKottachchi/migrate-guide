@@ -74,11 +74,8 @@ jobs:
         export ACCESS_KEY=$ACCESS_KEY
         export SECRET_ACCESS_KEY=$SECRET_ACCESS_KEY
 
-    - name: Run server
+    - name: Build server
       run: npm run build --if-present
-
-    - name: Stop server
-      run: kill $(cat server.pid)
 
     - name: Restart server
       run: sudo pm2 restart backend
