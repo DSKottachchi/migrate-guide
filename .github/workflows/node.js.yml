@@ -79,3 +79,4 @@ jobs:
 
     - name: Restart server
       run: sudo pm2 restart backend
+
