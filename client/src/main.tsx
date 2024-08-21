@@ -1,5 +1,4 @@
 import React from "react";
-import { store } from "../src/slices/index.ts";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ReactDOM from "react-dom/client";
@@ -13,6 +12,7 @@ import { TooltipProvider } from "./components/ui/tooltip.tsx";
 import Layout from "./components/layout/index.tsx";
 import { Register } from "./pages/register/Register.tsx";
 import { ClerkProvider } from "@clerk/clerk-react";
+import { store } from "../src/slices/store.ts";
 
 // Import your publishable key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY

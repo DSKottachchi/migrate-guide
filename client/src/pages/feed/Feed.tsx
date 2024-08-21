@@ -17,6 +17,8 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "../../components/ui/avatar";
+import { Skeleton } from "../../components/ui/skeleton";
+import { useGetPostsQuery } from "../../slices/postSlice";
 
 export default function Feed() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,8 +28,15 @@ export default function Feed() {
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
 
+  const { data, error, isLoading } = useGetPostsQuery("");
+  // setItems(data);
+  console.log("test", data);
+
+  // TODO:
+  // IF isLoading -> Show Skeleton
+
   useEffect(() => {
-    fetch("http://localhost:9090/api/posts", {
+    fetch("http://localhost:9091/api/posts", {
       method: "GET",
       credentials: "include",
     })
@@ -45,20 +54,13 @@ export default function Feed() {
     console.log(file);
     const data = new FormData();
 
-    const item = {
-      title: title,
-      description: description,
-    };
-
     if (file) {
       data.append("title", title);
       data.append("description", description);
       data.append("image", file[0]);
     }
 
-    console.log(item);
-
-    fetch(`http://localhost:9090/api/posts`, {
+    fetch(`http://localhost:9091/api/posts`, {
       method: "POST",
       body: data,
       headers: {
@@ -78,227 +80,251 @@ export default function Feed() {
   };
 
   return (
-    <div className="flex">
-      <div className="w-3/5">
-        <form
-          onSubmit={handleSubmit}
-          className=" overflow-hidden rounded-lg border bg-background p-2 mr-4 focus-within:ring-1 focus-within:ring-ring"
-        >
-          <Label htmlFor="message" className="sr-only">
-            Message
-          </Label>
+    <>
+      <div className="flex">
+        <div className="w-3/5">
+          <form
+            onSubmit={handleSubmit}
+            className=" overflow-hidden rounded-lg border bg-background p-2 mr-4 focus-within:ring-1 focus-within:ring-ring"
+          >
+            <Label htmlFor="message" className="sr-only">
+              Message
+            </Label>
 
-          <Input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="text-lg border-none focus-visible:ring-0"
-            placeholder="Title"
-          />
-          <Textarea
-            value={description}
-            onChange={(e: any) => setDescription(e.target.value)}
-            className="border-none focus-visible:ring-0 resize-none"
-            placeholder="Type your message here.."
-          />
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="text-lg border-none focus-visible:ring-0"
+              placeholder="Title"
+            />
+            <Textarea
+              value={description}
+              onChange={(e: any) => setDescription(e.target.value)}
+              className="border-none focus-visible:ring-0 resize-none"
+              placeholder="Type your message here.."
+            />
 
-          <div className="flex items-center p-3 pt-0  mt-2">
-            {/* <Tooltip>
+            <div className="flex items-center p-3 pt-0  mt-2">
+              {/* <Tooltip>
               <TooltipTrigger asChild>
               */}
 
-            <input
-              type="file"
-              accept=".jpeg, .png, .jpg"
-              onChange={(e: any) => setFile(e.target.files)}
-              className="text-sm text-stone-500 file:mr-5 file:py-1 file:px-3 file:border-[1px] file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
+              <input
+                type="file"
+                accept=".jpeg, .png, .jpg"
+                onChange={(e: any) => setFile(e.target.files)}
+                className="text-sm text-stone-500 file:mr-5 file:py-1 file:px-3 file:border-[1px] file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
               hover:file:cursor-pointer hover:file:bg-blue-50 hover:file:text-blue-700"
-            />
+              />
 
-            {/* </TooltipTrigger>
+              {/* </TooltipTrigger>
               <TooltipContent side="top">Attach File</TooltipContent>
             </Tooltip> */}
 
-            <Button type="submit" size="sm" className="ml-auto gap-1.5">
-              New Post
-              <CornerDownLeft className="size-3.5" />
-            </Button>
-          </div>
-        </form>
+              <Button type="submit" size="sm" className="ml-auto gap-1.5">
+                New Post
+                <CornerDownLeft className="size-3.5" />
+              </Button>
+            </div>
+          </form>
 
-        <div className="w-full h-screen mt-12">
-          <div className="flex flex-col gap-2 pr-4 pt-0">
-            {items.map((item: any) => (
-              <div
-                // key={item.id}
-                className={cn(
-                  "flex flex-col items-start gap-2 rounded-lg border px-8 py-8 text-left text-sm transition-all bg-white "
-                )}
-              >
-                <div className="flex w-full flex-col gap-1">
-                  <div className="flex items-center gap-4">
-                    <Avatar className="hidden h-9 w-9 sm:flex">
-                      <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                      <AvatarFallback>OM</AvatarFallback>
-                    </Avatar>
-                    <div className="grid gap-1">
-                      <p className="text-sm font-medium leading-none">
-                        Olivia Martin
-                      </p>
-                      {/* <p className="text-sm text-muted-foreground">
+          <div className="w-full h-screen mt-12">
+            <div className="flex flex-col gap-2 pr-4 pt-0">
+              {error ? (
+                <>Oh no, there was an error</>
+              ) : isLoading ? (
+                <>
+                  {Array(9).map(() => (                    
+                    <div className="flex flex-col space-y-3">
+                      <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+                      <div className="space-y-2">
+                        <Skeleton className="h-4 w-[250px]" />
+                        <Skeleton className="h-4 w-[200px]" />
+                      </div>
+                    </div>
+                  ))}
+                </>
+              ) : data ? (
+                <>
+                  {data.map((item: any) => (
+                    <div
+                      // key={item.id}
+                      className={cn(
+                        "flex flex-col items-start gap-2 rounded-lg border px-8 py-8 text-left text-sm transition-all bg-white "
+                      )}
+                    >
+                      <div className="flex w-full flex-col gap-1">
+                        <div className="flex items-center gap-4">
+                          <Avatar className="hidden h-9 w-9 sm:flex">
+                            <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                            <AvatarFallback>OM</AvatarFallback>
+                          </Avatar>
+                          <div className="grid gap-1">
+                            <p className="text-sm font-medium leading-none">
+                              Olivia Martin
+                            </p>
+                            {/* <p className="text-sm text-muted-foreground">
                       olivia.martin@email.com
                     </p> */}
 
-                      <div
-                        className={cn("text-xs mb-auto text-muted-foreground")}
-                      >
-                        over a year ago
-                      </div>
-                    </div>
+                            <div
+                              className={cn(
+                                "text-xs mb-auto text-muted-foreground"
+                              )}
+                            >
+                              over a year ago
+                            </div>
+                          </div>
 
-                    <button
-                      className={cn("ml-auto text-xs text-muted-foreground")}
-                    >
-                      <EllipsisVertical className="mr-2 h-4 w-4" />
-                    </button>
-                  </div>
+                          <button
+                            className={cn(
+                              "ml-auto text-xs text-muted-foreground"
+                            )}
+                          >
+                            <EllipsisVertical className="mr-2 h-4 w-4" />
+                          </button>
+                        </div>
 
-                  <div className="flex items-center mt-5">
-                    {/* <div className="flex items-center gap-2">
+                        <div className="flex items-center mt-5">
+                          {/* <div className="flex items-center gap-2">
                       <div className=" text-lg font-semibold">{item.title}</div>
                       {!item.title && (
                         <span className="flex h-2 w-2 rounded-full bg-blue-600" />
                       )}
                     </div> */}
-                  </div>
-                  {/* <div className="text-xs font-medium">{item.subject}</div> */}
-                </div>
-                <div className="line-clamp-2 mb-4 text-sm text-muted-foreground">
-                  {item.description.substring(0, 300)}
-                </div>
-                <img className="rounded-lg" src={item.image} alt="Logo" />
-                {/* <img src={URL.createObjectURL(item.image)} /> */}
+                        </div>
+                        {/* <div className="text-xs font-medium">{item.subject}</div> */}
+                      </div>
+                      <div className="line-clamp-2 mb-4 text-sm text-muted-foreground">
+                        {item.description.substring(0, 300)}
+                      </div>
+                      <img className="rounded-lg" src={item.image} alt="Logo" />
+                      {/* <img src={URL.createObjectURL(item.image)} /> */}
 
-                {/* {item.labels.length ? (
-                  <div className="flex items-center gap-2 mt-4">
-                    {item.labels.map((label) => (
-                      <Badge key={label}>work</Badge>
-                    ))}
-                  </div>
-                ) : null} */}
+                      {/* {item.labels.length ? (
+                        <div className="flex items-center gap-2 mt-4">
+                          {item.labels.map((label) => (
+                            <Badge key={label}>work</Badge>
+                          ))}
+                        </div>
+                      ) : null} */}
 
-                <div className="flex gap-2 mt-2">
-                  <Button className="text-xs h-8" variant="outline">
-                    <Star className="mr-2 h-4 w-4" /> Star (138)
-                  </Button>
-                  <Button className="text-xs h-8" variant="outline">
-                    <MessageCircle className="mr-2 h-4 w-4" /> Comments (36)
-                  </Button>
-                </div>
-              </div>
-            ))}
+                      <div className="flex gap-2 mt-2">
+                        <Button className="text-xs h-8" variant="outline">
+                          <Star className="mr-2 h-4 w-4" /> Star (138)
+                        </Button>
+                        <Button className="text-xs h-8" variant="outline">
+                          <MessageCircle className="mr-2 h-4 w-4" /> Comments
+                          (36)
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              ) : null}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="w-2/5 ml-auto">
-        <Card>
-          <div className="flex items-center p-4">
-            {/* <BellRing /> */}
-            <div className="flex-1">
-              <p className="text-sm font-medium">Suggested accounts</p>
-              <p className="text-sm">Send notifications to device.</p>
+        <div className="w-2/5 ml-auto">
+          <Card>
+            <div className="flex items-center p-4">
+              {/* <BellRing /> */}
+              <div className="flex-1">
+                <p className="text-sm font-medium">Suggested accounts</p>
+                <p className="text-sm">Send notifications to device.</p>
 
-              <div className="grid gap-8 mt-8">
-                <div className="flex items-center gap-4">
-                  <Avatar className="hidden h-9 w-9 sm:flex">
-                    <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                    <AvatarFallback>OM</AvatarFallback>
-                  </Avatar>
-                  <div className="grid gap-1 ">
-                    <p className="text-sm font-medium leading-none">
-                      Olivia Martin
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      olivia.martin@email.com
-                    </p>
+                <div className="grid gap-8 mt-8">
+                  <div className="flex items-center gap-4">
+                    <Avatar className="hidden h-9 w-9 sm:flex">
+                      <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                      <AvatarFallback>OM</AvatarFallback>
+                    </Avatar>
+                    <div className="grid gap-1 ">
+                      <p className="text-sm font-medium leading-none">
+                        Olivia Martin
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        olivia.martin@email.com
+                      </p>
+                    </div>
+                    <Button className="ml-auto" variant="secondary">
+                      Secondary
+                    </Button>
                   </div>
-                  <Button className="ml-auto" variant="secondary">
-                    Secondary
-                  </Button>
-                </div>
-                <div className="flex items-center gap-4">
-                  <Avatar className="hidden h-9 w-9 sm:flex">
-                    <AvatarImage src="/avatars/02.png" alt="Avatar" />
-                    <AvatarFallback>JL</AvatarFallback>
-                  </Avatar>
-                  <div className="grid gap-1">
-                    <p className="text-sm font-medium leading-none">
-                      Jackson Lee
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      jackson.lee@email.com
-                    </p>
+                  <div className="flex items-center gap-4">
+                    <Avatar className="hidden h-9 w-9 sm:flex">
+                      <AvatarImage src="/avatars/02.png" alt="Avatar" />
+                      <AvatarFallback>JL</AvatarFallback>
+                    </Avatar>
+                    <div className="grid gap-1">
+                      <p className="text-sm font-medium leading-none">
+                        Jackson Lee
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        jackson.lee@email.com
+                      </p>
+                    </div>
+                    <Button className="ml-auto" variant="secondary">
+                      Secondary
+                    </Button>
                   </div>
-                  <Button className="ml-auto" variant="secondary">
-                    Secondary
-                  </Button>
-                </div>
-                <div className="flex items-center gap-4">
-                  <Avatar className="hidden h-9 w-9 sm:flex">
-                    <AvatarImage src="/avatars/03.png" alt="Avatar" />
-                    <AvatarFallback>IN</AvatarFallback>
-                  </Avatar>
-                  <div className="grid gap-1">
-                    <p className="text-sm font-medium leading-none">
-                      Isabella Nguyen
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      isabella.nguyen@email.com
-                    </p>
+                  <div className="flex items-center gap-4">
+                    <Avatar className="hidden h-9 w-9 sm:flex">
+                      <AvatarImage src="/avatars/03.png" alt="Avatar" />
+                      <AvatarFallback>IN</AvatarFallback>
+                    </Avatar>
+                    <div className="grid gap-1">
+                      <p className="text-sm font-medium leading-none">
+                        Isabella Nguyen
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        isabella.nguyen@email.com
+                      </p>
+                    </div>
+                    <Button className="ml-auto" variant="secondary">
+                      Secondary
+                    </Button>
                   </div>
-                  <Button className="ml-auto" variant="secondary">
-                    Secondary
-                  </Button>
-                </div>
-                <div className="flex items-center gap-4">
-                  <Avatar className="hidden h-9 w-9 sm:flex">
-                    <AvatarImage src="/avatars/04.png" alt="Avatar" />
-                    <AvatarFallback>WK</AvatarFallback>
-                  </Avatar>
-                  <div className="grid gap-1">
-                    <p className="text-sm font-medium leading-none">
-                      William Kim
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      will@email.com
-                    </p>
+                  <div className="flex items-center gap-4">
+                    <Avatar className="hidden h-9 w-9 sm:flex">
+                      <AvatarImage src="/avatars/04.png" alt="Avatar" />
+                      <AvatarFallback>WK</AvatarFallback>
+                    </Avatar>
+                    <div className="grid gap-1">
+                      <p className="text-sm font-medium leading-none">
+                        William Kim
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        will@email.com
+                      </p>
+                    </div>
+                    <Button className="ml-auto" variant="secondary">
+                      Secondary
+                    </Button>
                   </div>
-                  <Button className="ml-auto" variant="secondary">
-                    Secondary
-                  </Button>
-                </div>
-                <div className="flex items-center gap-4">
-                  <Avatar className="hidden h-9 w-9 sm:flex">
-                    <AvatarImage src="/avatars/05.png" alt="Avatar" />
-                    <AvatarFallback>SD</AvatarFallback>
-                  </Avatar>
-                  <div className="grid gap-1">
-                    <p className="text-sm font-medium leading-none">
-                      Sofia Davis
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      sofia.davis@email.com
-                    </p>
+                  <div className="flex items-center gap-4">
+                    <Avatar className="hidden h-9 w-9 sm:flex">
+                      <AvatarImage src="/avatars/05.png" alt="Avatar" />
+                      <AvatarFallback>SD</AvatarFallback>
+                    </Avatar>
+                    <div className="grid gap-1">
+                      <p className="text-sm font-medium leading-none">
+                        Sofia Davis
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        sofia.davis@email.com
+                      </p>
+                    </div>
+                    <Button className="ml-auto" variant="secondary">
+                      Secondary
+                    </Button>
                   </div>
-                  <Button className="ml-auto" variant="secondary">
-                    Secondary
-                  </Button>
                 </div>
               </div>
             </div>
-          </div>
-        </Card>
-        {/* <Card className="mt-10">
+          </Card>
+          {/* <Card className="mt-10">
           <div className="flex items-center p-4">
             <div className="flex-1">
               <p className="text-sm font-medium">Discover</p>
@@ -314,8 +340,9 @@ export default function Feed() {
             </div>
           </div>
         </Card> */}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
